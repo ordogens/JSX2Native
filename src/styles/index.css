@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.input-code {
+  width: 50%;
+  padding: 1rem;
+  border-right: 2px solid var(--border-color);
+  overflow: auto;
+}
+
+.output {
+  width: 50%;
+  padding: 1rem;
+  overflow: auto;
+}
+
+header, footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--header-footer-bg);
+  color: var(--header-footer-text);
+}

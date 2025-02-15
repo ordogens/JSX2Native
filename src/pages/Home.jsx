@@ -1,12 +1,11 @@
 import { InputCode } from '../components/InputCode';
 import { Output } from '../components/Output';
-import { Controls } from '../components/Controls';
+import './../styles/Home.css'
 
 export const Home = () => {
     return (
-        <div>
+        <div className='Home'>
             <InputCode />
-            <Controls />
             <Output />
         </div>
     );

@@ -1,5 +1,7 @@
+import './../styles/Output.css'
+
 export const Output = () => {
   return (
-    <div>Output</div>
+    <div className='Output'></div>
   )
 }

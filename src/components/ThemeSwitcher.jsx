@@ -1,8 +1,9 @@
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import './../styles/ThethemeSwitcher.css'
 
 export const ThemeSwitcher = () => {
     const { toggleTheme } = useContext(AppContext);
 
-    return <button onClick={toggleTheme}>Toggle Theme</button>;
+    return <button className='boton' onClick={toggleTheme}>Toggle Theme</button>;
 };

@@ -1,18 +1,20 @@
-import './../styles/InputCode.css'
-import React, { useState } from "react";
+import React from "react";
 import Editor from "@monaco-editor/react";
+import "../styles/InputCode.css";
 
-export const InputCode = () => {
-  const [code, setCode] = useState("// Escribe tu código aquí...");
+export const InputCode = ({ code, onCodeChange }) => {
   return (
-    <div className='InputCode'>
+    <div className="InputCode">
       <Editor
-        height="100%"
         defaultLanguage="javascript"
         theme="vs-dark"
         value={code}
-        onChange={(newValue) => setCode(newValue)}
+        onChange={onCodeChange} // Envía el código en tiempo real a `App.js`
+        // options={{
+        //   fontSize: 14,
+        //   minimap: { enabled: false },
+        //   automaticLayout: true,
       />
     </div>
-  )
-}
+  );
+};

@@ -78,7 +78,7 @@ export const Home = () => {
       };
 
       const asyncWrapper = `(async () => { ${code} })()`;
-      await eval(asyncWrapper); // Permite que fetch y await funcionen
+      await eval(asyncWrapper);
 
       Object.assign(console, originalConsole);
 

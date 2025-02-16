@@ -1,4 +1,22 @@
-.Footer{
+.Footer {
     display: flex;
     justify-content: center;
-}
+    align-items: center;
+    height: 2%;
+    color: #ccc;
+    font-size: small;
+    background: linear-gradient(to right, #0f245e, #000000, #0f245e);
+    background-size: 200% 100%;
+    animation: gradientShift 10s infinite linear;
+    box-shadow: inset 0px 10px 10px rgba(0, 0, 0, 0.6); /* Sombra interna en la parte superior */
+  }
+  
+  @keyframes gradientShift {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  

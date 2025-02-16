@@ -1,5 +1,18 @@
-.Home{
+.Home {
+    display: grid;
+    grid-template-rows: 1fr;
+    height: calc(100vh - (2% + 2%)); /* Ajustamos la altura según el header y el footer */
+    width: 100%;
+    background: #1e1e1e;
+    color: #ccc;
+}
+
+.input-output-container {
+    display: flex;
     width: 100%;
     height: 100%;
-    display: flex;
 }
+
+
+
+

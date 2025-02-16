@@ -1,12 +1,24 @@
-.Header{
-    height: 30px;
-    background-color: #68217A;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.Header {
+  height: 4%;
+  background: linear-gradient(to right, #0f245e, #000000, #0f245e);
+  background-size: 200% 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: gradientShift 10s infinite linear;
+  position: relative;
+  box-shadow: inset 0px -10px 10px rgba(0, 0, 0, 0.6);
+}
 
-    .hh1{
+h1 {
+  color: #ccc;
+}
 
-        color: white;
-    }
+@keyframes gradientShift {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

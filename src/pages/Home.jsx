@@ -1,40 +1,99 @@
 import { useState, useEffect } from "react";
 import { InputCode } from "../components/InputCode";
 import { Output } from "../components/Output";
-import '../styles/Home.css'
+import "../styles/Home.css";
 
 export const Home = () => {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
 
-  // Ejecutar código automáticamente cuando cambia
   useEffect(() => {
-    runCode(code);
+    code.trim() ? runCode(code) : setOutput("");
   }, [code]);
 
-  const runCode = (code) => {
+  const runCode = async (code) => {
     try {
       let outputCapture = "";
-      const logInterceptor = (message) => (outputCapture += message + "\n");
+      const originalConsole = { ...console };
 
-      const originalConsoleLog = console.log;
-      console.log = logInterceptor; // Interceptar `console.log()`
+      const captureOutput = (type, ...args) => {
+        let formattedMessage = args
+          .map((arg) =>
+            typeof arg === "object"
+              ? JSON.stringify(arg, null, 2)
+              : typeof arg === "function"
+                ? arg.toString()
+                : String(arg)
+          )
+          .join(" ");
 
-      const result = eval(code); // ⚠️ Ejecuta código (solo para JavaScript)
+        outputCapture += `[${type}] ${formattedMessage}\n`;
+      };
 
-      console.log = originalConsoleLog; // Restaurar `console.log`
+      console.log = (...args) => captureOutput("LOG", ...args);
+      console.warn = (...args) => captureOutput("WARN", ...args);
+      console.error = (...args) => captureOutput("ERROR", ...args);
+      console.info = (...args) => captureOutput("INFO", ...args);
 
-      setOutput(outputCapture || String(result) || "No hay salida");
+      console.table = (data) => {
+        if (Array.isArray(data) || typeof data === "object") {
+          let keys = Object.keys(data[0] || data);
+          let rows = Array.isArray(data) ? data : [data];
+
+          let columnWidths = keys.map((key) => {
+            let maxKeyLength = key.length;
+            let maxValueLength = Math.max(
+              ...rows.map((row) => String(row[key] || "").length)
+            );
+            return Math.max(maxKeyLength, maxValueLength);
+          });
+
+          const padString = (str, length) =>
+            str + " ".repeat(length - str.length);
+
+          let tableString =
+            "| " +
+            keys.map((key, i) => padString(key, columnWidths[i])).join(" | ") +
+            " |\n";
+          tableString +=
+            "| " +
+            columnWidths.map((width) => "-".repeat(width)).join(" | ") +
+            " |\n";
+
+          rows.forEach((row) => {
+            tableString +=
+              "| " +
+              keys
+                .map((key, i) =>
+                  padString(String(row[key] || ""), columnWidths[i])
+                )
+                .join(" | ") +
+              " |\n";
+          });
+
+          outputCapture += `[TABLE]\n${tableString}\n`;
+        } else {
+          captureOutput("TABLE", data);
+        }
+      };
+
+      const asyncWrapper = `(async () => { ${code} })()`;
+      await eval(asyncWrapper); // Permite que fetch y await funcionen
+
+      Object.assign(console, originalConsole);
+
+      setOutput(outputCapture || "No hay salida");
     } catch (error) {
-      setOutput(`Error: ${error.message}`);
+      setOutput(`[ERROR] ${error.message}`);
     }
   };
 
   return (
     <div className="Home">
-      <InputCode code={code} onCodeChange={setCode} />
-      <Output code={code} output={output} />
+      <div className="input-output-container">
+        <InputCode code={code} onCodeChange={setCode} />
+        <Output output={output} />
+      </div>
     </div>
   );
 };
-

@@ -1,7 +1,7 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
-import "../styles/InputCode.css";
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import "../styles/InputCode.css";
 
 export const InputCode = ({ code, onCodeChange }) => {
   const monaco = useMonaco();
@@ -19,7 +19,7 @@ export const InputCode = ({ code, onCodeChange }) => {
           focusBorder: "#00000000",
         },
       });
-      setThemeDefined(true); // Evita redefinir el tema en cada render
+      setThemeDefined(true);
     }
   }, [monaco, themeDefined]);
 
@@ -27,12 +27,12 @@ export const InputCode = ({ code, onCodeChange }) => {
     <div className="InputCode">
       <Editor
         defaultLanguage="javascript"
-        theme={themeDefined ? "custom-dark" : "vs-dark"} // Evita mostrar "vs"
+        theme={themeDefined ? "custom-dark" : "vs-dark"}
         value={code}
         onChange={onCodeChange}
         loading={
           <div style={{ color: "#000", textAlign: "center" }}>
-            Cargando editor...
+            Loading editor...
           </div>
         }
         options={{

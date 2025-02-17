@@ -1,8 +1,5 @@
-import { ThemeSwitcher } from "./ThemeSwitcher"
+// import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const Controls = () => {
-  return (
-    <div className="boton">
-    </div>
-  )
-}
+  return <div className="boton"></div>;
+};

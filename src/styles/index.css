@@ -31,7 +31,8 @@ body {
   overflow: auto;
 }
 
-header, footer {
+header,
+footer {
   text-align: center;
   padding: 1rem;
   background-color: var(--header-footer-bg);

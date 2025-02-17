@@ -10,10 +10,10 @@ export const InputCode = ({ code, onCodeChange }) => {
         theme="vs-dark"
         value={code}
         onChange={onCodeChange} // Envía el código en tiempo real a `App.js`
-        // options={{
-        //   fontSize: 14,
-        //   minimap: { enabled: false },
-        //   automaticLayout: true,
+        options={{
+          fontSize: 14,
+          minimap: { enabled: false },
+          automaticLayout: true,}}
       />
     </div>
   );

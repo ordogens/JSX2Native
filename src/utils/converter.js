@@ -11,6 +11,8 @@ export const convertJSXToReactNative = (jsxCode) => {
     h6: "Text",
     img: "Image",
     button: "Pressable",
+    input: "TextInput",
+    textarea: "TextInput",
   };
 
   const cssToRN = {

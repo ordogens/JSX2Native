@@ -35,7 +35,6 @@ export const convertJSXToReactNative = (jsxCode) => {
   const styles = {};
   let styleCount = 0;
 
-  // Corrige el cierre incorrecto de etiquetas en JSX
   jsxCode = jsxCode.replace(/<\/([a-zA-Z0-9]+)>/g, (_, tag) => {
     return `</${replacements[tag] || tag}>`;
   });
@@ -49,7 +48,6 @@ export const convertJSXToReactNative = (jsxCode) => {
 
       let newAttributes = attributes;
 
-      // Procesar estilos inline
       const styleMatch = attributes.match(/style=["']([^"']+)["']/);
       if (styleMatch) {
         const cssRules = styleMatch[1].split(";").map((rule) => rule.trim());
@@ -59,29 +57,31 @@ export const convertJSXToReactNative = (jsxCode) => {
           if (rule) {
             const [property, value] = rule.split(":").map((str) => str.trim());
             if (cssToRN[property]) {
-              // Elimina "px" y mantiene números como valores numéricos
               const cleanValue = value.replace(/px$/, "");
               rnStyles[cssToRN[property]] = isNaN(cleanValue)
-                ? `"${cleanValue}"` // Mantiene strings con comillas
-                : parseFloat(cleanValue); // Convertir números
+                ? `"${cleanValue}"`
+                : parseFloat(cleanValue);
             }
           }
         });
 
         const styleName = `style${styleCount++}`;
         styles[styleName] = rnStyles;
-        newAttributes = newAttributes.replace(styleMatch[0], `style={styles.${styleName}}`);
+        newAttributes = newAttributes.replace(
+          styleMatch[0],
+          `style={styles.${styleName}}`
+        );
       }
 
       return `<${replacement}${newAttributes}>`;
     }
   );
 
-  // Generar la importación correcta
   const imports = `import { ${Array.from(usedComponents).join(", ")} } from 'react-native';`;
 
-  // Generar la declaración de estilos correctamente formateados
-  const stylesObject = `const styles = StyleSheet.create({\n${Object.entries(styles)
+  const stylesObject = `const styles = StyleSheet.create({\n${Object.entries(
+    styles
+  )
     .map(
       ([name, style]) =>
         `  ${name}: {\n${Object.entries(style)

@@ -25,10 +25,8 @@ export const InputCode = ({ code, onCodeChange }) => {
 
   useEffect(() => {
     if (monaco) {
-      // Habilitar la predicción de código y sugerencias
       monaco.languages.registerCompletionItemProvider("javascript", {
         provideCompletionItems: (model, position) => {
-          // Obtenemos el texto de la línea actual en la posición
           const word = model.getWordAtPosition(position);
           const suggestions = [
             {
@@ -48,10 +46,8 @@ export const InputCode = ({ code, onCodeChange }) => {
               insertText: "function ${1}() {${2}}",
               insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
             },
-            // Agregar más sugerencias dependiendo de las necesidades
           ];
 
-          // Si el usuario está escribiendo dentro de una palabra, solo sugerir palabras relacionadas
           if (word) {
             return {
               suggestions: suggestions.filter((suggestion) =>
@@ -63,7 +59,6 @@ export const InputCode = ({ code, onCodeChange }) => {
         },
       });
 
-      // Habilitar autocierre de etiquetas en todos los lenguajes
       monaco.languages.setMonarchTokensProvider("html", {
         tokenizer: {
           root: [
@@ -93,9 +88,9 @@ export const InputCode = ({ code, onCodeChange }) => {
           fontSize: 14,
           minimap: { enabled: false },
           automaticLayout: true,
-          autoClosingBrackets: "always", // Autocierre de corchetes
-          autoClosingQuotes: "always", // Autocierre de comillas
-          suggestOnTriggerCharacters: true, // Sugerencias automáticas
+          autoClosingBrackets: "always",
+          autoClosingQuotes: "always",
+          suggestOnTriggerCharacters: true,
         }}
       />
     </div>

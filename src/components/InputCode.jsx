@@ -23,6 +23,58 @@ export const InputCode = ({ code, onCodeChange }) => {
     }
   }, [monaco, themeDefined]);
 
+  useEffect(() => {
+    if (monaco) {
+      // Habilitar la predicción de código y sugerencias
+      monaco.languages.registerCompletionItemProvider("javascript", {
+        provideCompletionItems: (model, position) => {
+          // Obtenemos el texto de la línea actual en la posición
+          const word = model.getWordAtPosition(position);
+          const suggestions = [
+            {
+              label: "console.log",
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: "console.log(${1});",
+              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            },
+            {
+              label: "let",
+              kind: monaco.languages.CompletionItemKind.Keyword,
+              insertText: "let ${1};",
+            },
+            {
+              label: "function",
+              kind: monaco.languages.CompletionItemKind.Keyword,
+              insertText: "function ${1}() {${2}}",
+              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            },
+            // Agregar más sugerencias dependiendo de las necesidades
+          ];
+
+          // Si el usuario está escribiendo dentro de una palabra, solo sugerir palabras relacionadas
+          if (word) {
+            return {
+              suggestions: suggestions.filter((suggestion) =>
+                suggestion.label.startsWith(word.word)
+              ),
+            };
+          }
+          return { suggestions };
+        },
+      });
+
+      // Habilitar autocierre de etiquetas en todos los lenguajes
+      monaco.languages.setMonarchTokensProvider("html", {
+        tokenizer: {
+          root: [
+            [/<[^/]*$/, "tag.open"],
+            [/<\/[^>]*$/, "tag.close"],
+          ],
+        },
+      });
+    }
+  }, [monaco]);
+
   return (
     <div className="InputCode">
       <Editor
@@ -41,6 +93,9 @@ export const InputCode = ({ code, onCodeChange }) => {
           fontSize: 14,
           minimap: { enabled: false },
           automaticLayout: true,
+          autoClosingBrackets: "always", // Autocierre de corchetes
+          autoClosingQuotes: "always", // Autocierre de comillas
+          suggestOnTriggerCharacters: true, // Sugerencias automáticas
         }}
       />
     </div>
